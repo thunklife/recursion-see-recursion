@@ -1,0 +1,741 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Recursion: See Recursion</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="css/reveal.min.css">
+    <link rel="stylesheet" href="css/theme/default.css" id="theme">
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+    <link rel="stylesheet" href="css/custom.css">
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section class="intro" data-background="images/peacock.jpg">
+          <h2>hello.</h2>
+          <h4>@jessewilliamson</h4>
+        </section>
+        <section data-background="images/leaves.jpg">
+          <pre>
+            <code>
+            function doubleList(nums){
+              var res = [];
+              for(var i = 0; i < nums.length; i++){
+                res.push(nums[i] * 2);
+              }
+              return res;
+            }
+            </code>
+          </pre>
+          <aside class="notes">
+            <ul>
+              <li>Today I want to talk about loops</li>
+              <li>This is a simple loop, we've all written something like it</li>
+              <li>In imperative languages loops are the primary means of iteration</li>
+              <li>They become so common place we don't even notice the moving parts</li>
+            </ul>
+          </aside>
+        </section>
+        <section data-background="images/leaves.jpg">
+          <h3>what if javascript didn't have loops?</h3>
+          <h4 class="fragment">Array.prototype.map/forEach/reduce/filter</h4>
+          <p class="fragment">cheater!</p>
+          <aside class="notes">
+            <ul>
+              <li>pretend there were no native iteration methods</li>
+              <li>pretend you were concerned with something other than arrays</li>
+            </ul>
+          </aside>
+        </section>
+        <section data-background="images/balboa.jpg">
+          <h2>recursion: </h2>
+          <h3 class="fragment">see recursion</h3>
+        </section>
+        <section data-background="images/balboa.jpg">
+          <h3>recursion occurs when the solution to a problem depends on the solution to smaller versions of the same problem</h3>
+        </section>
+        <section data-background="images/balboa.jpg">
+          <h3>recursion and loops solve the same problem</h3>
+        </section>
+        <section data-background="images/balboa.jpg">
+          <h3>both repeat some action until a terminal case is met</h3>
+          <h4 class="fragment">however...</h4>
+        </section>
+        <section data-background="images/balboa.jpg">
+          <h3>there is a subtle but important distinction between the two</h3>
+        </section>
+        <section data-background="images/balboa.jpg">
+          <h3>let's compare</h3>
+          <pre>
+            <code>
+            function sum(nums){
+              var res 0;
+              for(var i = 0; i < nums.length; i++){
+                res += nums[i];
+              }
+              return res;
+            }
+            </code>
+          </pre>
+          <pre>
+            <code>
+            function sum(nums){
+              if(!nums.length) return 0;
+              return nums.pop() + sum(nums);
+            }
+            </code>
+          </pre>
+          <aside class="notes">
+            <ul>
+              <li>In the loop we concern we have to set up state, concern ourselves with looping variables, etc.</li>
+              <li>In the recursive version, we consider different cases</li>
+              <li>What happens if the list is empty? What happens otherwise</li>
+            </ul>
+          </aside>
+        </section>
+        <section data-background="images/mushrooms.jpg">
+          <h3>recursive thinking</h3>
+        </section>
+        <section data-background="images/mushrooms.jpg">
+          <h3>it's about more than just a function calling itself</h3>
+          <h4 class="fragment">it requires a new way of looking at problems</h4>
+          <aside class="notes">
+            <ul>
+              <li>if you're like me, you learned with loops, so you need to unlearn them</li>
+              <li>recursion requires a different perspective, but it is actually much simpler</li>
+            </ul>
+          </aside>
+        </section>
+        <section data-background="images/mushrooms.jpg">
+          <h3>establish the base case(s) that return a value</h3>
+          </br>
+          <h3 class="fragment">reduce the input so that a base case is eventually hit</h3>
+          <aside class="notes">
+            <ul>
+              <li>begin with a base or terminal case (or cases)</li>
+              <li>the terminal case will be the stopping point for the function and returns some value</li>
+              <li>then reduce your input with each step until a base case is met</li>
+            </ul>
+          </aside>
+        </section>
+        <section data-background="images/mushrooms.jpg">
+          <h3>maximum</h3>
+          <h4 class="fragment">find the largest number in an list</h4>
+        </section>
+        <section data-background="images/mushrooms.jpg">
+          <h3>what do we do if the list is empty?</h3>
+          <h4 class="fragment">probably throw an error</h4>
+          </br>
+          <h3 class="fragment">what do we do if it's a singleton list?</h3>
+          <h4 class="fragment">return the only number we have</h4>
+          </br>
+          <h3 class="fragment">what do we do otherwise?</h3>
+          <h4 class="fragment">compare the head to the largest number from the rest of the list</h4>
+          <aside class="notes">
+            <li>Throwing an error isn't ideal, because it means our function is partial</li>
+            <li>Without introducing a lot of other concepts and code it's the best we can do</li>
+          </aside>
+        </section>
+        <section data-background="images/mushrooms.jpg">
+          <h5>ES5</h5>
+          <pre>
+            <code>
+              function maximum(nums){
+                if(!nums.length) throw "empty list";
+                if(nums.length == 1) return nums[0];
+                return Math.max(nums.shift(), maximum(nums));
+              }
+            </code>
+          </pre>
+          <h5>ES6</h5>
+          <pre>
+            <code>
+              function maximum([x, ...xs]){
+                if (x === undefined) throw "empty list";
+                if (xs === undefined) return x;
+                return Math.max(x, maximum(xs));
+              }
+            </code>
+          </pre>
+          <aside class="notes">
+            <ul>
+              <li>ES6 gives us destructuring which simplifies things quite a bit</li>
+              <li>It breaks the list into the head and tail</li>
+              <li>An empty list will give us undefined x</li>
+              <li>A singleton list will have xs undefined</li>
+            </ul>
+        </section>
+        <section data-background="images/rainbow.jpg">
+          <h2>Visualizing Recursion</h2>
+          <aside class="notes">
+            <ul>
+              <li>Being able to visualize each step of a recursive function is great for understanding</li>
+              <li>Because much of what a loop is doing is internal, this type of reasoning requires assumptions</li>
+              <li>Whereas with recursion each step is literally the output of the current function</li>
+            </ul>
+        </section>
+        <section data-background="images/rainbow.jpg">
+          <h3>sum([1,2,3,4,5])</h3>
+          <h3 class="fragment"> 1 + (sum([2,3,4,5]))</h3>
+          <h3 class="fragment"> 1 + (2 + (sum([3,4,5])))</h3>
+          <h3 class="fragment"> 1 + (2 + (3 + (sum([4,5]))))</h3>
+          <h3 class="fragment"> 1 + (2 + (3 + (4 + (sum([5])))))</h3>
+          <h3 class="fragment"> 1 + (2 + (3 + (4 + (5 + (sum([]))))))</h3>
+          <h3 class="fragment"> 1 + (2 + (3 + (4 + (5 + 0))))</h3>
+          <h3 class="fragment"> 1 + (2 + (3 + (4 + 5)))</h3>
+          <h3 class="fragment"> 1 + (2 + (3 + 9))</h3>
+          <h3 class="fragment"> 1 + (2 + 12)</h3>
+          <h3 class="fragment"> 1 + 14</h3>
+          <h3 class="fragment"> 15</h3>
+          <aside class="notes">
+            <ul>
+              <li>recall the function sum from before</li>
+              <li>it sums a list by taking the first element, and adding that value to the sum of the rest of the list</li>
+              <li>with each step we take the head and add it to the sum of the rest of the list</li>
+              <li>this repeats until we reach then end and we get zero</li>
+              <li>the recursion then works its way back to the final solution</li>
+            </ul>
+          </aside>
+        </section>
+        <section data-background="images/rainbow.jpg">
+          <section>
+            <h3>foldr</h3>
+            <small>aka reduce</small>
+            <h4 class="fragment">reduce a recursive structure (like a list) into a new structure*</h4>
+            <small class="fragment">*lots more stuff can be folded, but the nevermind that</small>
+          </section>
+          <section>
+            <h3>but first...</h3>
+            <h4 class="fragment">how is a list a recursive structure</h4>
+          </section>
+          <section>
+            <h3>let's look at some Haskell</h3>
+          </section>
+          <section>
+            <h3>we can define lists in Haskell in the same way we define arrays in JS</h3>
+            <h3>[1,2,3,4,5]</h3>
+          </section>
+          <section>
+            <h3>in Haskell this notation is actually just sugar for</h3>
+            <h3>1 : 2 : 3 : 4 : 5 : []</h3>
+            <div class="fragment">
+              <h4>which is actually just sugar for</h4>
+              <h4>1 : (2 : (3 : (4 : (5 : []))))</h4>
+            </div>
+            <aside class="notes">
+              <ul>
+                <li>the ':' operator is the 'cons' function</li>
+                <li>it takes an element and a list, and returns a new list</li>
+              </ul>
+            </aside>
+          </section>
+          <section>
+            <h3>to further illustrate the recursive nature, we can define our own data type for lists</h3>
+          </section>
+          <section>
+            <pre>
+              <code>
+                λ data List a = Cons a (List a) | Nil
+                λ Cons 1 (Cons 2 (Cons 3 Nil)))
+              </code>
+            </pre>
+            <aside class="notes">
+              <ul>
+                <li>We define a new datatype for List.</li>
+                <li>A list is defined either as 'Cons a' followed by a 'List a', or Nil</li>
+                <li>Nil is our version of the empty list</li>
+                <li>so a list is actually an single element, and then a list</li>
+              </ul>
+            </aside>
+          </section>
+        </section>
+        <section data-background="images/rainbow.jpg">
+          <h3>so how do we define foldr/reduce for list</h3>
+          <aside class="notes">
+            <ul>
+              <li>foldr takes an accumulator value, a function that gets applied to the accumulator and each item in the list, and a list</li>
+            </ul>
+          </aside>
+        </section>
+        <section data-background="images/rainbow.jpg">
+          <h3>what do we do with an empty list?</h3>
+          <h4 class="fragment">return the accumulator</h4>
+          <h3 class="fragment">what do we do otherwise?</h3>
+          <h4 class="fragment">apply the function to the accumulator & the head of the list, then fold the rest</h4>
+        </section>
+        <section data-background="images/rainbow.jpg">
+          <pre>
+            <code>
+              function foldr(a, f, xs){
+                if(!xs.length) return a;
+                return foldr(f(a, xs.shift()), f, xs);
+              }
+            </code>
+          </pre>
+          <pre>
+            <code>
+              function foldr(a, f,[x, ...xs]){
+                return (x === undefined) ? a : foldr(f(x), f, xs);
+              }
+            </code>
+          </pre>
+          <pre class="fragment">
+            <code>
+              function add(x,y){
+                return x + y;
+              }
+
+              foldr(0, add, [1,2,3,4,5]) //=> 15
+            </code>
+          </pre>
+        </section>
+        <section data-background="images/rainbow.jpg">
+          <section>
+            <h3>side note about foldr</h3>
+            <aside class="notes">
+              <ul>
+                <li>recall the recursion can parallel structures, foldr is a nice illustration</li>
+              </ul>
+            </aside>
+          </section>
+          <section>
+            <h3>1 : 2 : 3 : 4 : 5 : []</h3>
+            <div class="fragment">
+              <h2>↓</h2> 
+              <h3>1 : (2 : (3 : (4 : (5 : []))))</h3>
+            </div>
+            <div class="fragment">
+              <h2>↓</h2> 
+              <h3>1 (f) 2 (f) 3 (f) 4 (f) 5 (f) 0</h3>
+            </div>
+            <div class="fragment">
+              <h2>↓</h2> 
+              <h3>1 + 2 + 3 + 4 + 5 + 0</h3>
+            </div>
+            <div class="fragment">
+              <h3>↓</h3> 
+              <h3>15</h3>
+            </div>
+            <aside class="notes">
+              <ul>
+                <li>notice how much this looks like the result of the sum function</li>
+                <li>that similarity illustrates that sum is actually a fold</li>
+                <li>as such it could be written as a partially applied fold</li>
+                <li>this also illustrates an important point about recursive functions: they can mirror the structures they operate on</li>
+              </ul>
+            </aside>
+          </section>
+        </section>
+        <section data-background="images/pears.jpg">
+          <h2>flavors of recursion</h2>
+        </section>
+        <section data-background="images/pears.jpg">
+          <h3>direct recursion</h3>
+          <h4 class="fragment">most common example of recursion</h4>
+          <h4 class="fragment">involves a function calling itself one or more times</h4>
+          <h4 class="fragment">natural fit when dealing with recursive data structure</h4>
+          <aside class="notes">
+            <ul>
+              <li>this is the type of recursion focused on in this talk</li>
+              <li>by "one or more times" I'm the number of times the function is called at each step</li>
+              <li>if the function is called once, it's just referred to as direct. More than once is "multiple"</li>
+            </ul>
+          </aside>
+        </section>
+        <section data-background="images/pears.jpg">
+          <h3>multiple recursion</h3>
+          <h4 class="fragment">direct recursion with multiple calls</h4>
+          <pre class="fragment">
+            <code>
+              function fib(n){
+                if(n === 0) return 0;
+                if(n === 1) return 1;
+                return fib(n-2) + fib(n-1);
+              }
+            </code>
+          </pre>
+          <aside class="notes">
+            <ul>
+              <li>if I'm honest, I couldn't express this visually</li>
+              <li>however, it does illustrate how closely recursive functions mirror the underlying algorithm</li>
+              <li>this is pretty close to the textbook definition for calculating fibonnacci numbers</li>
+            </ul>
+          </aside>
+        </section>
+        <section data-background="images/pears.jpg">
+          <h3>mutual/indirect recursion</h3>
+          <h4 class="fragment">2 or more functions calling each other</h4>
+          <h4 class="fragment">natural fit when dealing with mutually recursive structures (trees)</h4>
+        </section>
+        <section data-background="images/pears.jpg">
+          <h3>even/odd</h3>
+          <pre>
+            <code>
+              function isEven(n){
+                return n === 0 ? true : isOdd(n-1);
+              }
+
+              function isOdd(n){
+                return n === 0 ? false : isEven(n-1);
+              }
+            </code>
+          </pre>
+          <pre class="fragment">
+            <code>
+            isEven(4); //=> true;
+            //=> isEven(4) => isOdd(3) => isEven(2) => isOdd(1) => isEven(0) => true
+            </code>
+          </pre>
+          <aside class="notes">
+            <ul>
+              <li>this function works by bouncing back between functions until one ends on zero</li>
+            </ul>
+          </aside>
+        </section>
+        <section data-background="images/moss.jpg">
+          <h3>why not recursion</h3>
+        </section>
+        <section data-background="images/moss.jpg">
+          <h3>ye olde call stack</h3>
+          <h4 class="fragment">each call creates a new stack frame</h4>
+          <h4 class="fragment">each call builds a deferred operation</h4>
+          <h4 class="fragment">these operations can't be run until the final call</h4>
+          <h4 class="fragment">requires O(2<sup>n</sup>) steps</h4>
+          <aside class="notes">
+            <ul>
+              <li>because of these limitations, recursion is a bad idea for large calculations</li>
+            </ul>
+          </aside>
+        </section>
+        <section data-background="images/moss.jpg">
+          <h3>But recursion is old, surely this is solved</h3>
+          <p class="fragment">yup, and the solution is tail-recursion</p>
+        </section>
+        <section data-background="images/moss.jpg">
+          <h3>a tail call occurs when the final action of a function is a function call</h3>
+          <h4 class="fragment">if that function recurses, we have tail-recursion</h4>
+        </section>
+        <section data-background="images/moss.jpg">
+          <h3>tail-recursive sum</h3>
+          <pre>
+            <code>
+              function sum(nums){
+                return go(0, nums);
+
+                function go(a, [x, ...xs]){
+                  if(x === undefined) return a;
+                  return go(a + x, xs);
+                }
+              }
+              </code>
+            </pre>
+        </section>
+          <section data-background="images/moss.jpg">
+            <h3>tail-recursive functions rely on an accumulator</h3>
+            <h4 class="fragment">the function is given the current state of the return value</p>
+            <h4 class="fragment">going back through stack isn't required</h4>
+          </section>
+          <section data-background="images/moss.jpg">
+            <h3>some languages optimize tail-recursion</h3>
+            <h4 class="fragment">the result is effectively a loop</h4>
+            <h4 class="fragment">it runs in constant time & linear space</h4>
+          </section>
+          <section data-background="images/moss.jpg">
+            <h3>javascript is *not* one of those languages</h3>
+            <h4 class="fragment">yet</h4>
+          </section>
+          <section data-background="images/moss.jpg">
+            <h3>es6 will support "proper tail-calls"</h3>
+            <aside class="notes">
+              <ul>
+                <li>I personally thinkg proper tail-calls is huge, and doesn't get enough love</li>
+                <li>It means you don't need to write loops, your tail-recursive functions will operate in the same space as loops</li>
+                <li>Douglas Crockford (for whatever that is worth), gave a talk at NordicJS last year and said that once tail-calls land in ES6, he'll never right a loop again. Admittedly, that was one of only, maybe, two things in his talk that made a lick of sense (the other being that he doesn't use 'this').</li>
+              </ul>
+            </section>
+            <section data-background="images/moss.jpg">
+              <h3>there is no support for tail-call optimzation currently</h3>
+              <h4 class="fragment">some libraries, like babel (formerly 6to5), do have support</h4>
+              <small class="fragment">but fear not</small>
+            </section>
+            <section data-background="images/moss.jpg">
+              <h3>trampolines to the rescue</h3>
+            </section>
+            <section data-background="images/moss.jpg">
+              <h3>a trampoline is a mechanism for looping over thunk-returning functions, and invoking them; simulating tail-call elimination</h3>
+              <h6 class="fragment">yes you have to use a loop to build a trampoline</h6>
+              <h6 class="fragment">no the irony is not lost on me</h6>
+            </section>
+            <section data-background="images/moss.jpg">
+              <h3>thunk???</h3>
+            </section>
+            <section data-background="images/moss.jpg">
+              <h3>a thunk is just an unevaluated expression</h3>
+              <h4 class="fragment">so a "thunk-returning" function is one that returns a function that, when invoked, will perform the next computation</h4>
+              <aside class="notes">
+                <ul>
+                  <li>thunks are how lazy languages like Haskell work. Everything is wrapped in a thunk which isn't invoked until it is needed</li>
+                </ul>
+              </aside>
+            </section>
+            <section data-background="images/moss.jpg">
+              <pre>
+                <code>
+                  function trampoline(fn){
+                    return function(/*args*/){
+                      var res = fn.apply(this, arguments);
+                      while(res instanceof Function){
+                        res = res();
+                      }
+                      return res;
+                    }
+                  }
+                </code>
+              </pre>
+              <small>I'm about 95% sure this solution is from Reg Braithwaite</small>
+          </section>
+          <section data-background="images/moss.jpg">
+            <h3>trampoline is a decorator that adds tail-call optimization to the original function</h3>
+          </section>
+          <section data-background="images/moss.jpg">
+            <h3>using the trampoline</h3>
+            <pre>
+              <code>
+            function sum(nums){
+              var sum_ = trampoline(function myself(a, [x, ...xs]){
+                return (x === undefined) ? a : function() { return myself(a + x, xs); };
+              });
+              return sum_(0, nums);
+            }
+              </code>
+            </pre>
+          </section>
+          <section data-background="images/ford.jpg">
+            <h3>quick recap</h3>
+          </section>
+          <section data-background="images/ford.jpg">
+            <h3>recursion solves problems by solving smaller versions of the same problem</h3>
+          </section>
+          <section data-background="images/ford.jpg">
+            <h3> recursion focuses on decomposing a problem, while loops focus on iteration</h3>
+          </section>
+          <section data-background="images/ford.jpg">
+            <h3>recursion allows us to visually represent our computation</h3>
+          </section>
+          <section data-background="images/ford.jpg">
+            <h3>recursive functions often parallel the structures they operate on</h3>
+          </section>
+          <section data-background="images/ford.jpg">
+            <h3>recursive functions can be a performance issue</h3>
+          </section>
+          <section data-background="images/ford.jpg">
+            <h3>we can use tail-recursive functions to remove direct recursion</h3>
+          </section>
+          <section data-background="images/ford.jpg">
+            <h3>we can use trampolines to get the benefits of tail-call elimination</h3>
+          </section>
+          <section data-background="images/peacock.jpg">
+            <h3>the end <span class="fragment">?</span></h3>
+          </section>
+          <section data-background="images/peacock.jpg">
+            <h3>anonymous recursion</h3>
+            <h4>recursion without names</h4>
+          </section>
+          <section data-background="images/peacock.jpg">
+            <h3>this can be accomplished two ways</h3>
+            <h4 class="fragment">explicitly through function passing</h4>
+            <h4 class="fragment">implicitly through reflection</h4>
+          </section >
+          <section data-background="images/peacock.jpg">
+            <h3>lucky us!</h3>
+            <h4>javascript supports both</h3>
+          </section>
+        <section data-background="images/peacock.jpg">
+          <h3>factorial</h3>
+          <pre>
+            <code>
+            function factorial(n){
+              return n == 0 ? 1 : n * factorial(n-1);
+            }
+
+            factorial(5); //=> 120 
+            </code>
+          </pre>
+        </section>
+        <section data-background="images/peacock.jpg">
+          <h3>arguments.callee</h3>
+          <small>fight me</small>
+          <pre>
+            <code>
+            function factorial(n){
+              return n == 0 ? 1 : n * arguments.callee(n-1);
+            }
+
+            factorial(5); //=> 120
+            </code>
+          </pre>
+        </section>
+        <section data-background="images/peacock.jpg">
+          <h3>making it higher-order</h3>
+          <pre>
+            <code>
+            function factorial(f){
+              return function(n){
+                return n == 0 ? 1 : n * f(f)(n-1);
+              }
+            }
+            </code>
+          </pre>
+          <h4 class="fragment">but what function do we pass in</h4>
+          <pre class="fragment">
+            <code>
+            factorial(factorial)(5); //=> 120
+            </code>
+          </pre>
+          <aside class="notes">
+            <ul>
+              <li>the function we pass has to be able to calculate the next step</li>
+              <li>if we pass factorial to itself, we get such a function</li>
+              <li>we then need to pass along function to the next step</li>
+            </ul>
+          </aside>
+        </section>
+        <section data-background="images/peacock.jpg">
+          <h3>factorial is the "fix point" of factorial</h3>
+          <aside class="notes">
+            <ul>
+              <li>the fix point of any function is an input that yields the same output</li>
+              <li>for example, fix points of a square function are 0 and 1</li>
+              <li>for higher-order recursive functions like factorial, they are their own fix point</li>
+              <li>but we can do better</li>
+            </ul>
+          </section>
+          <section data-background="images/peacock.jpg">
+            <h3>working towards a more general solution</h3>
+            <pre>
+              <code>
+               function factorial(f){
+                return  function(n){
+                  var g = function(h){
+                    return function(n){
+                      return n == 0 ? 1 : n * h(n-1);
+                    };
+                  };
+                  return g(f(f))(n);
+                };
+              }
+
+              factorial(factorial)(5); //=> 120
+            </code>
+          </pre>
+          <aside class="notes">
+            <ul>
+              <li>The first thing we want to get rid of is the need for factorial to call f(f). That's an implementation detail</li>
+              <li>We wrap our actual factorial function in a new function that takes the recursive function as an argument</li>
+              <li>We pass f(f) as that argument</li>
+            </ul>
+          </aside>
+        </section>
+        <section data-background="images/peacock.jpg">
+          <h3>refactoring</h3>
+          <pre>
+            <code>
+             var g = function(h){
+              return function(n){
+                return n == 0 ? 1 : n * h(n-1);
+               };
+             };
+
+             function factorial(f){
+              return function(n){
+                return g(f(f))(n);
+              };
+            }
+
+            factorial(factorial)(5); //=> 120;
+            </code>
+          </pre>
+          <aside class="notes">
+            <ul>
+              <li>the function g in our previous step is the exact factorial function we want so we extract it here and the results are the same</li>
+            </ul>
+          </aside>
+        </section>
+        <section data-background="images/peacock.jpg">
+          <h3>a wild Y appears</h3>
+          <pre>
+            <code>
+            function factorial(f){
+              return function(n){
+                return n == 0 ? 1 : n * f(n-1);
+              };
+            }
+
+            function Y(f){
+              var g = function(h){
+                return function(n){
+                  return f(h(h))(n);
+                }
+              }
+
+              return g(g);
+            }
+
+            Y(factorial)(5); //=> 120;
+            </code>
+          </pre>
+          <aside class="notes">
+            <ul>
+              <li>we need a function that, when given a function, can pass along the correct function to any higher-order recursive function</li>
+              <li>it needs to figure out the fix point</li>
+              <li>that is what the Y combinator does, or more accurately in this case, the Z combinator</li>
+            </ul>
+          </aside>
+        </section>
+        <section data-background="images/peacock.jpg">
+          <h3>the Y combinator gives us a way to make recursive functions without names, or any other language mechanisms.</h3>
+          <h4 class="fragment">it's just functions</h4>
+        </section>
+        <section data-background="images/peacock.jpg">
+          <h3>of course, we don't ever need to use it</h3>
+          <h4 class="fragment">it's still cool as hell though</h4>
+        </section>
+        <section data-background="images/plume.jpg">
+          <h3>thanks!</h3>
+        </section>
+      </div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.min.js"></script>
+    <script>
+    Reveal.initialize({
+      controls: true,
+      progress: true,
+      history: true,
+      center: true,
+      theme: 'night', // available themes are in /css/theme
+      transition: 'fade', // default/cube/page/concave/zoom/linear/fade/none
+      backgroundTransition: 'fade',
+
+    // Parallax scrolling
+    // parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+    // parallaxBackgroundSize: '2100px 900px',
+
+    // Optional libraries used to extend on reveal.js
+      dependencies: [
+        { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+        { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+        { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+        { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+      ]
+    });
+    </script>
+  </body>
+</html>
