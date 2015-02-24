@@ -46,3 +46,7 @@
 .reveal .mono{
   font-family: "Droid Sans Mono", mono
 }
+
+.reveal .function-sign{
+  margin: 0 30px;
+}

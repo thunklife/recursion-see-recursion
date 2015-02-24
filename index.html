@@ -59,10 +59,10 @@
           <h3>recursion occurs when the solution to a problem depends on the solution to smaller versions of the same problem</h3>
         </section>
         <section data-background="images/balboa.jpg">
-          <h3>recursion and loops solve the same problem</h3>
+          <h3>recursion & loops solve the same problem</h3>
         </section>
         <section data-background="images/balboa.jpg">
-          <h3>both repeat some action until a terminal case is met</h3>
+          <h3>both are used to repeat an action</h3>
           <h4 class="fragment">however...</h4>
         </section>
         <section data-background="images/balboa.jpg">
@@ -85,7 +85,7 @@
             <code>
             function sum(nums){
               if(!nums.length) return 0;
-              return nums.pop() + sum(nums);
+              return nums.shift() + sum(nums);
             }
             </code>
           </pre>
@@ -101,7 +101,7 @@
           <h3>recursive thinking</h3>
         </section>
         <section data-background="images/mushrooms.jpg">
-          <h3>it's about more than just a function calling itself</h3>
+          <h3>it's not just a function calling itself</h3>
           <h4 class="fragment">it requires a new way of looking at problems</h4>
           <aside class="notes">
             <ul>
@@ -216,11 +216,11 @@
             <h3>let's look at some Haskell</h3>
           </section>
           <section>
-            <h3>we can define lists in Haskell in the same way we define arrays in JS</h3>
-            <h3>[1,2,3,4,5]</h3>
+            <h3>in Haskell a list looks like an array in JavaScript</h3>
+            <h3 class="fragment">[1,2,3,4,5]</h3>
           </section>
           <section>
-            <h3>in Haskell this notation is actually just sugar for</h3>
+            <h3>but this notation is actually just sugar for</h3>
             <h3>1 : 2 : 3 : 4 : 5 : []</h3>
             <div class="fragment">
               <h4>which is actually just sugar for</h4>
@@ -230,6 +230,7 @@
               <ul>
                 <li>the ':' operator is the 'cons' function</li>
                 <li>it takes an element and a list, and returns a new list</li>
+                <li>notice the similarity between this, and the visualization of sum from before</li>
               </ul>
             </aside>
           </section>
@@ -264,6 +265,7 @@
         <section data-background="images/rainbow.jpg">
           <h3>what do we do with an empty list?</h3>
           <h4 class="fragment">return the accumulator</h4>
+          </br>
           <h3 class="fragment">what do we do otherwise?</h3>
           <h4 class="fragment">apply the function to the accumulator & the head of the list, then fold the rest</h4>
         </section>
@@ -294,41 +296,39 @@
           </pre>
         </section>
         <section data-background="images/rainbow.jpg">
-          <section>
-            <h3>side note about foldr</h3>
-            <aside class="notes">
-              <ul>
-                <li>recall the recursion can parallel structures, foldr is a nice illustration</li>
-              </ul>
-            </aside>
-          </section>
-          <section>
-            <h3>1 : 2 : 3 : 4 : 5 : []</h3>
-            <div class="fragment">
-              <h2>↓</h2> 
-              <h3>1 : (2 : (3 : (4 : (5 : []))))</h3>
-            </div>
-            <div class="fragment">
-              <h2>↓</h2> 
-              <h3>1 (f) 2 (f) 3 (f) 4 (f) 5 (f) 0</h3>
-            </div>
-            <div class="fragment">
-              <h2>↓</h2> 
-              <h3>1 + 2 + 3 + 4 + 5 + 0</h3>
-            </div>
-            <div class="fragment">
-              <h3>↓</h3> 
-              <h3>15</h3>
-            </div>
-            <aside class="notes">
-              <ul>
-                <li>notice how much this looks like the result of the sum function</li>
-                <li>that similarity illustrates that sum is actually a fold</li>
-                <li>as such it could be written as a partially applied fold</li>
-                <li>this also illustrates an important point about recursive functions: they can mirror the structures they operate on</li>
-              </ul>
-            </aside>
-          </section>
+          <h3>visualizing foldr</h3>
+          <aside class="notes">
+            <ul>
+              <li>recall the recursion can parallel structures, foldr is a nice illustration</li>
+            </ul>
+          </aside>
+        </section>
+        <section data-background="images/rainbow.jpg">
+          <h3>1 : 2 : 3 : 4 : 5 : []</h3>
+          <div class="fragment">
+            <h2>↓</h2> 
+            <h3>1 : (2 : (3 : (4 : (5 : []))))</h3>
+          </div>
+          <div class="fragment">
+            <h2>↓</h2> 
+            <h3>1<span class="function-sign">𝑓</span>2<span class="function-sign">𝑓</span>3<span class="function-sign">𝑓</span>4<span class="function-sign">𝑓</span>5<span class="function-sign">𝑓</span>𝐴</h3>
+          </div>
+          <div class="fragment">
+            <h2>↓</h2> 
+            <h3>1 + 2 + 3 + 4 + 5 + 0</h3>
+          </div>
+          <div class="fragment">
+            <h3>↓</h3> 
+            <h3>15</h3>
+          </div>
+          <aside class="notes">
+            <ul>
+              <li>notice how much this looks like the result of the sum function</li>
+              <li>that similarity illustrates that sum is actually a fold</li>
+              <li>as such it could be written as a partially applied fold</li>
+              <li>this also illustrates an important point about recursive functions: they can mirror the structures they operate on</li>
+            </ul>
+          </aside>
         </section>
         <section data-background="images/pears.jpg">
           <h2>flavors of recursion</h2>
@@ -506,10 +506,10 @@
             <pre>
               <code>
             function sum(nums){
-              var sum_ = trampoline(function myself(a, [x, ...xs]){
-                return (x === undefined) ? a : function() { return myself(a + x, xs); };
+              var go = trampoline(function _sum(a, [x, ...xs]){
+                return (x === undefined) ? a : function() { return _sum(a + x, xs); };
               });
-              return sum_(0, nums);
+              return go(0, nums);
             }
               </code>
             </pre>
@@ -583,9 +583,18 @@
           <h3>making it higher-order</h3>
           <pre>
             <code>
-            function factorial(f){
+            function factorial(h){
               return function(n){
-                return n == 0 ? 1 : n * f(f)(n-1);
+                return n == 0 ? 1 : n * h(n-1);
+              }
+            }
+            </code>
+          </pre>
+          <pre class="fragment">
+            <code>
+            function factorial(h){
+              return function(h){
+                return n == 0 ? 1 : n * h(h)(n-1);
               }
             }
             </code>
@@ -618,14 +627,14 @@
             <h3>working towards a more general solution</h3>
             <pre>
               <code>
-               function factorial(f){
+               function factorial(h){
                 return  function(n){
-                  var g = function(h){
+                  var f = function(q){
                     return function(n){
-                      return n == 0 ? 1 : n * h(n-1);
+                      return n == 0 ? 1 : n * q(n-1);
                     };
                   };
-                  return g(f(f))(n);
+                  return f(h(h))(n);
                 };
               }
 
@@ -635,8 +644,8 @@
           <aside class="notes">
             <ul>
               <li>The first thing we want to get rid of is the need for factorial to call f(f). That's an implementation detail</li>
-              <li>We wrap our actual factorial function in a new function that takes the recursive function as an argument</li>
-              <li>We pass f(f) as that argument</li>
+              <li>we introduce a new function so that our inner "factorial" function doesn't have any knowedge of the recursion</li>
+              <li>This also separate the inner function from the variable bindings around it</li>
             </ul>
           </aside>
         </section>
@@ -644,15 +653,15 @@
           <h3>refactoring</h3>
           <pre>
             <code>
-             var g = function(h){
+             var h = function(q){
               return function(n){
-                return n == 0 ? 1 : n * h(n-1);
+                return n == 0 ? 1 : n * q(n-1);
                };
              };
 
-             function factorial(f){
+             function factorial(h){
               return function(n){
-                return g(f(f))(n);
+                return f(h(h))(n);
               };
             }
 
@@ -690,9 +699,37 @@
           </pre>
           <aside class="notes">
             <ul>
-              <li>we need a function that, when given a function, can pass along the correct function to any higher-order recursive function</li>
-              <li>it needs to figure out the fix point</li>
-              <li>that is what the Y combinator does, or more accurately in this case, the Z combinator</li>
+              <li>We can abstract over f by introducing a function that accepts f as an argument</li>
+              <li>We assign our previous version of "factorial" to g, and apply g to itself</li>
+              <li>calling g with itself is the same thing we did when we called factorial with itself</li>
+              <li>The result is a function that takes an argument, and recursively calls f</li>
+              <li>This is the Y combinator (technically Z) and it computes the fixed point of a function</li>
+            </ul>
+          </aside>
+        </section>
+        <section data-background="images/peacock.jpg">
+          <h3>a more accurate Y</h3>
+          <pre>
+            <code>
+              function Y(f){
+                return (function(h){
+                  return function(n){
+                    return f(h(h))(n);
+                  }
+                })(
+                  function(h){
+                    return function(n){
+                      return f(h(h))(n);
+                    }
+                  }
+                );
+              }
+            </code>
+          </pre>
+          <aside class="notes">
+            <ul>
+              <li>Y comes from lambda calculus which doesn't all for assignment</li>
+              <li>This version of Y is more reflective of that</li>
             </ul>
           </aside>
         </section>
@@ -704,7 +741,7 @@
           <h3>of course, we don't ever need to use it</h3>
           <h4 class="fragment">it's still cool as hell though</h4>
         </section>
-        <section data-background="images/plume.jpg">
+        <section data-background="images/peacock2.jpg">
           <h3>thanks!</h3>
         </section>
       </div>
