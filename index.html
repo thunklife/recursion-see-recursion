@@ -272,16 +272,17 @@
         <section data-background="images/rainbow.jpg">
           <pre>
             <code>
-              function foldr(a, f, xs){
+              function foldr(f, a, xs){
                 if(!xs.length) return a;
-                return foldr(f(a, xs.shift()), f, xs);
+                var x = xs.shift();
+                return f(x, foldr(f, a, xs));
               }
             </code>
           </pre>
           <pre>
             <code>
               function foldr(a, f,[x, ...xs]){
-                return (x === undefined) ? a : foldr(f(x), f, xs);
+                return (x === undefined) ? a : f(x, foldr(f, a, xs));
               }
             </code>
           </pre>
@@ -291,7 +292,7 @@
                 return x + y;
               }
 
-              foldr(0, add, [1,2,3,4,5]) //=> 15
+              foldr(add, 0, [1,2,3,4,5]) //=> 15
             </code>
           </pre>
         </section>
@@ -652,7 +653,7 @@
           <h3>refactoring</h3>
           <pre>
             <code>
-             var h = function(q){
+             var f = function(q){
               return function(n){
                 return n == 0 ? 1 : n * q(n-1);
                };
@@ -669,7 +670,7 @@
           </pre>
           <aside class="notes">
             <ul>
-              <li>the function g in our previous step is the exact factorial function we want so we extract it here and the results are the same</li>
+              <li>the function f in our previous step is the exact factorial function we want so we extract it here and the results are the same</li>
             </ul>
           </aside>
         </section>
@@ -727,7 +728,7 @@
           </pre>
           <aside class="notes">
             <ul>
-              <li>Y comes from lambda calculus which doesn't all for assignment</li>
+              <li>Y comes from lambda calculus which doesn't allow for assignment</li>
               <li>This version of Y is more reflective of that</li>
             </ul>
           </aside>
